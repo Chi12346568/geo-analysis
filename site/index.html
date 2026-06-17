@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GEO Juma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <svg aria-hidden="true" class="icon-sprite">
+      <symbol id="icon-activity" viewBox="0 0 24 24">
+        <path d="M3 12h4l3-8 4 16 3-8h4" />
+      </symbol>
+      <symbol id="icon-alert" viewBox="0 0 24 24">
+        <path d="M12 9v4" /><path d="M12 17h.01" /><path d="M10.3 4.3 2.8 18a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m20 6-11 11-5-5" />
+      </symbol>
+      <symbol id="icon-chevron" viewBox="0 0 24 24">
+        <path d="m9 18 6-6-6-6" />
+      </symbol>
+      <symbol id="icon-key" viewBox="0 0 24 24">
+        <circle cx="7.5" cy="15.5" r="3.5" /><path d="m10 13 8-8" /><path d="m15 5 4 4" /><path d="m17 3 4 4" />
+      </symbol>
+      <symbol id="icon-message" viewBox="0 0 24 24">
+        <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
+      </symbol>
+      <symbol id="icon-play" viewBox="0 0 24 24">
+        <path d="m8 5 11 7-11 7Z" />
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24">
+        <path d="M21 12a9 9 0 0 1-15.2 6.5" /><path d="M3 12A9 9 0 0 1 18.2 5.5" /><path d="M3 19v-5h5" /><path d="M21 5v5h-5" />
+      </symbol>
+      <symbol id="icon-report" viewBox="0 0 24 24">
+        <path d="M4 4h16v16H4Z" /><path d="M8 9h8" /><path d="M8 13h8" /><path d="M8 17h5" />
+      </symbol>
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1A2 2 0 1 1 4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1A2 2 0 1 1 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1A2 2 0 1 1 19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6 1h.1a2 2 0 1 1 0 4H21a1.7 1.7 0 0 0-1.6 1Z" />
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24">
+        <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+      </symbol>
+    </svg>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <span class="brand-mark">GJ</span>
+          <div class="brand-text">
+            <span class="brand-name">GEO Juma</span>
+            <span class="brand-sub">Generative visibility analysis</span>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="status-chip" aria-live="polite">
+            <span id="statusDot" class="dot offline"></span>
+            <span id="statusText">Disconnected</span>
+          </div>
+          <button id="loadLastButton" type="button" class="command-button">
+            <svg class="icon"><use href="#icon-refresh"></use></svg>
+            <span class="button-label">Load last</span>
+          </button>
+          <button id="settingsButton" type="button" class="icon-button" aria-label="Settings">
+            <svg class="icon"><use href="#icon-settings"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="product-grid">
+        <section class="scan-panel" aria-label="Analysis setup">
+          <p class="panel-kicker">New analysis</p>
+          <h2>Scan a site for generative visibility gaps</h2>
+          <p id="contextLabel" class="context-label">Local context</p>
+
+          <div class="mode-tabs" role="tablist" aria-label="Input mode">
+            <button class="mode-tab active" type="button" data-mode="url">URL</button>
+            <button class="mode-tab" type="button" data-mode="html">HTML</button>
+            <button class="mode-tab" type="button" data-mode="upload">Files</button>
+            <button class="mode-tab" type="button" data-mode="project">Path</button>
+          </div>
+
+          <div class="input-stack">
+            <label class="field-group mode-field" data-field="url">
+              <span>Website URL</span>
+              <input id="urlInput" type="url" placeholder="https://example.com/page" />
+            </label>
+
+            <label class="field-group mode-field hidden" data-field="html">
+              <span>HTML or rendered content</span>
+              <textarea id="htmlInput" rows="8" placeholder="<main>...</main>"></textarea>
+            </label>
+
+            <label class="field-group mode-field hidden" data-field="upload">
+              <span>Website files</span>
+              <input id="fileInput" type="file" multiple />
+            </label>
+
+            <label class="field-group mode-field hidden" data-field="project">
+              <span>Local project path</span>
+              <input id="projectPathInput" type="text" placeholder="/home/user/site" />
+            </label>
+
+            <details class="advanced-panel">
+              <summary>
+                <svg class="icon"><use href="#icon-chevron"></use></svg>
+                Advanced crawl options
+              </summary>
+              <label class="field-group">
+                <span>robots.txt override</span>
+                <textarea id="robotsInput" rows="5" placeholder="Optional robots.txt content"></textarea>
+              </label>
+            </details>
+
+            <button id="runButton" type="button" class="primary-action">
+              <svg class="icon"><use href="#icon-play"></use></svg>
+              <span class="button-label">Run analysis</span>
+            </button>
+
+            <section class="panel-block" aria-label="Saved sessions">
+              <div class="section-title compact-title">
+                <h3>Saved sessions</h3>
+              </div>
+              <div id="sideSessionsList" class="sessions-list compact-sessions"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="result-stage" aria-label="Analysis summary">
+          <header class="result-header">
+            <div class="result-title">
+              <p class="panel-kicker">Current analysis</p>
+              <h2 id="pageTitle">No analysis loaded</h2>
+              <p id="pageMeta" class="result-meta">Choose an input source and run the scan.</p>
+            </div>
+            <div class="result-tools">
+              <button id="openIssuesButton" type="button" class="command-button">
+                <svg class="icon"><use href="#icon-alert"></use></svg>
+                <span>Issues</span>
+              </button>
+              <button id="openReportButton" type="button" class="command-button">
+                <svg class="icon"><use href="#icon-report"></use></svg>
+                <span>Report</span>
+              </button>
+              <button id="openChatButton" type="button" class="command-button">
+                <svg class="icon"><use href="#icon-message"></use></svg>
+                <span>Coordinator</span>
+              </button>
+            </div>
+          </header>
+
+          <div class="metric-strip">
+            <article class="metric metric-primary" title="Overall GEO readiness R = weighted average of the 7 dimension scores (technical, GEO visibility, LLM visibility, trust, extractability, citability, performance). 0-100, higher is better.">
+              <span>GEO visibility</span>
+              <strong id="overallScore">--</strong>
+              <p>Overall score / 100</p>
+            </article>
+            <article class="metric">
+              <span>Projected</span>
+              <strong id="projectedScore">--</strong>
+              <p id="scoreDelta">No benchmark yet</p>
+            </article>
+            <article class="metric">
+              <span>Issues</span>
+              <strong id="issueCount">0</strong>
+              <p>Grouped by severity</p>
+            </article>
+            <article class="metric">
+              <span>Extracted</span>
+              <strong id="wordCount">--</strong>
+              <p>Readable words</p>
+            </article>
+          </div>
+
+          <section class="stage-section" aria-label="Score breakdown">
+            <div class="section-title">
+              <h3>Score breakdown</h3>
+            </div>
+            <div class="score-breakdown" id="scoreBreakdown"></div>
+          </section>
+
+          <section class="stage-section" aria-label="Benchmarks before and after">
+            <div class="section-title">
+              <h3>Benchmarks before/after</h3>
+            </div>
+            <div id="benchmarkComparison" class="benchmark-comparison"></div>
+          </section>
+
+          <section class="stage-section" aria-label="Agent activity">
+            <div class="section-title">
+              <h3>Agent pipeline</h3>
+              <button id="openAgentsButton" type="button" class="text-command">
+                Full workflow
+                <svg class="icon"><use href="#icon-chevron"></use></svg>
+              </button>
+            </div>
+            <div id="agentActivity" class="activity-strip"></div>
+          </section>
+
+          <section class="stage-section" aria-label="Priority fixes">
+            <div class="section-title">
+              <h3>Priority fixes</h3>
+            </div>
+            <ol id="recommendationsList" class="priority-list"></ol>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <dialog id="settingsDialog" class="app-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <h2>Settings</h2>
+            <p>agent.d connection and OpenAI key status.</p>
+          </div>
+          <button type="button" class="icon-button dialog-close" aria-label="Close settings">
+            <svg class="icon"><use href="#icon-x"></use></svg>
+          </button>
+        </header>
+        <div class="dialog-body settings-grid">
+          <label class="field-group">
+            <span>agent.d URL</span>
+            <input id="daemonUrl" type="url" value="http://127.0.0.1:7777" />
+          </label>
+          <div class="settings-actions">
+            <button id="checkStatusButton" type="button" class="command-button">
+              <svg class="icon"><use href="#icon-activity"></use></svg>
+              <span class="button-label">Check status</span>
+            </button>
+            <button id="clearButton" type="button" class="command-button danger">
+              <svg class="icon"><use href="#icon-x"></use></svg>
+              <span class="button-label">Clear memory</span>
+            </button>
+          </div>
+          <label class="field-group">
+            <span>OpenAI key</span>
+            <input id="openaiKey" type="password" placeholder="sk-..." autocomplete="off" />
+          </label>
+          <button id="saveKeyButton" type="button" class="primary-action">
+            <svg class="icon"><use href="#icon-key"></use></svg>
+            <span class="button-label">Save key</span>
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="issuesDialog" class="app-dialog wide-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <h2>Detected issues</h2>
+            <p>Evidence and recommended corrections.</p>
+          </div>
+          <button type="button" class="icon-button dialog-close" aria-label="Close issues">
+            <svg class="icon"><use href="#icon-x"></use></svg>
+          </button>
+        </header>
+        <div class="dialog-body">
+          <div class="issue-filter" role="group" aria-label="Issue filter">
+            <button class="filter-button active" type="button" data-filter="all">All</button>
+            <button class="filter-button" type="button" data-filter="high">High</button>
+            <button class="filter-button" type="button" data-filter="medium">Medium</button>
+            <button class="filter-button" type="button" data-filter="low">Low</button>
+          </div>
+          <div id="issuesList" class="issues-list"></div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="diffDialog" class="app-dialog wide-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <h2>AI recommended fix</h2>
+            <p id="diffExplanation">Review the change before applying.</p>
+          </div>
+          <button type="button" class="icon-button dialog-close" aria-label="Close fix">
+            <svg class="icon"><use href="#icon-x"></use></svg>
+          </button>
+        </header>
+        <div class="dialog-body">
+          <pre id="diffView" class="diff-view"></pre>
+          <div class="dialog-actions diff-actions">
+            <button type="button" id="approveFixButton" class="primary-action">Approve change</button>
+            <button type="button" id="discardFixButton" class="command-button">Discard</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="agentsDialog" class="app-dialog wide-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <h2>Agent workflow</h2>
+            <p>Execution state for the eight-agent GEO pipeline.</p>
+          </div>
+          <button type="button" class="icon-button dialog-close" aria-label="Close agents">
+            <svg class="icon"><use href="#icon-x"></use></svg>
+          </button>
+        </header>
+        <div class="dialog-body">
+          <div id="agentGrid" class="agent-grid"></div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="reportDialog" class="app-dialog wide-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <h2>Optimization report</h2>
+            <p>Generated from the latest benchmark and recommendations.</p>
+          </div>
+          <div class="dialog-actions">
+            <button id="reportButton" type="button" class="command-button">
+              <svg class="icon"><use href="#icon-report"></use></svg>
+              <span class="button-label">Generate</span>
+            </button>
+            <div class="split-button" id="downloadSplit" hidden>
+              <button id="downloadReportButton" type="button" class="command-button" disabled>
+                <svg class="icon"><use href="#icon-report"></use></svg>
+                <span id="downloadLabel" class="button-label">Download .md</span>
+              </button>
+              <button id="downloadMenuButton" type="button" class="command-button split-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Choose download format" disabled>
+                <svg class="icon"><use href="#icon-chevron"></use></svg>
+              </button>
+              <div id="downloadMenu" class="download-menu" role="menu" hidden>
+                <button type="button" role="menuitem" data-format="md">Markdown (.md)</button>
+                <button type="button" role="menuitem" data-format="pdf">PDF</button>
+              </div>
+            </div>
+            <button type="button" class="icon-button dialog-close" aria-label="Close report">
+              <svg class="icon"><use href="#icon-x"></use></svg>
+            </button>
+          </div>
+        </header>
+        <div class="dialog-body report-panel">
+          <div id="reportOutput" class="report-rendered">Run an analysis, then generate a report.</div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="chatDialog" class="app-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <h2>Coordinator</h2>
+            <p>Ask for implementation steps or benchmark interpretation.</p>
+          </div>
+          <button type="button" class="icon-button dialog-close" aria-label="Close coordinator">
+            <svg class="icon"><use href="#icon-x"></use></svg>
+          </button>
+        </header>
+        <div class="dialog-body chat-panel">
+          <ol id="messages" class="messages" aria-live="polite"></ol>
+          <form id="chatForm" class="composer">
+            <textarea id="prompt" rows="3" placeholder="Ask for next implementation steps"></textarea>
+            <button id="sendButton" type="submit" class="primary-action">
+              <svg class="icon"><use href="#icon-message"></use></svg>
+              <span class="button-label">Send</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <template id="emptyStateTemplate">
+      <div class="empty-state">
+        <h2>No analysis loaded</h2>
+        <p>Choose a URL, HTML, files, or project path and run the multi-agent scan.</p>
+      </div>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+# GEO Juma grants. Default-deny: anything not listed here is refused.
+
+# Tools ------------------------------------------------------------------------
+[tool.geo]
+# fs.write:* is broad on purpose — grants are per tool, not per action, so this
+# write capability is shared by every geo.* action. The real guardrail is in
+# the handlers: geo.apply_fix only writes paths validated to sit inside the
+# scanned project root (util.path_inside), and rejects `..` escapes.
+granted = [
+  "ai:openai",
+  "net:*",
+  "fs.read:*",
+  "fs.write:*",
+  "memory.read:geo_juma/**",
+  "memory.write:geo_juma/**",
+]
+
+[tool.chat]
+granted = [
+  "ai:openai",
+  "memory.read:geo_juma/**",
+  "memory.write:geo_juma/**",
+]
+
+[tool.secrets]
+granted = ["secret:openai_api_key"]
+
+# Runners — one per agent + the coordinator. None may call actions. ------------
+[runner.geo_juma_chat]
+allowed_actions = []
+
+[runner.geo_juma_data_collection]
+allowed_actions = []
+
+[runner.geo_juma_technical_seo]
+allowed_actions = []
+
+[runner.geo_juma_visibility]
+allowed_actions = []
+
+[runner.geo_juma_eeat]
+allowed_actions = []
+
+[runner.geo_juma_llm_testing]
+allowed_actions = []
+
+[runner.geo_juma_recommendation]
+allowed_actions = []
+
+[runner.geo_juma_scoring]
+allowed_actions = []
+
+[runner.geo_juma_report]
+allowed_actions = []
+
+# Interfaces ---------------------------------------------------------------------
+[interface.ws]
+allowed_actions = [
+  "geo.analyze",
+  "geo.project_scan",
+  "geo.recommend_fix",
+  "geo.apply_fix",
+  "geo.last_analysis",
+  "geo.pipeline_status",
+  "geo.sessions",
+  "geo.restore_session",
+  "geo.report",
+  "chat.send",
+  "chat.history",
+  "chat.clear",
+  "secrets.set_openai_key",
+  "secrets.openai_status",
+]
+
+[policy]
+deny_actions = []
+deny_permissions = []
