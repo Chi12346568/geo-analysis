@@ -859,7 +859,8 @@ async function uploadedHtml() {
 }
 
 async function buildAnalysisPayload() {
-  const robots = els.robotsInput.value.trim();
+  // The robots.txt override is optional and may be omitted from customized UI builds.
+  const robots = els.robotsInput?.value.trim() || "";
   if (state.mode === "url") {
     const url = els.urlInput.value.trim();
     if (!url) throw new Error("Website URL is required");
