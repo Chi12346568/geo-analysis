@@ -60,10 +60,8 @@ return function(deps)
 		name = "chat.clear",
 		requires = { "memory.write:" .. MEM .. "/**" },
 		handler = function(args, ctx)
-			local mem = store.memory_for(ctx, args)
-			mem:delete("history")
-			mem:delete("last_report")
-			return { ok = true, session = ctx.caller.session }
+			local session = store.clear_context(ctx, args)
+			return { ok = true, session = session }
 		end,
 	})
 end

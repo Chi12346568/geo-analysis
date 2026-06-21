@@ -2,11 +2,41 @@
 -- and analysis summaries shared by the chat and report actions.
 return function(config)
 	local store = {}
+	local AGENT_SLUGS = {
+		"data_collection",
+		"technical_seo",
+		"geo_visibility",
+		"eeat_credibility",
+		"llm_testing",
+		"recommendation",
+		"scoring",
+		"reporting",
+	}
+
+	local function session_for(ctx, args)
+		local explicit = args and (args.context_id or args.project_id)
+		return explicit or ctx.caller.session or "local"
+	end
 
 	function store.memory_for(ctx, args)
-		local explicit = args and (args.context_id or args.project_id)
-		local session = explicit or ctx.caller.session or "local"
+		local session = session_for(ctx, args)
 		return ctx.memory.create(config.MEMORY_ROOT .. "/" .. tostring(session))
+	end
+
+	function store.clear_context(ctx, args)
+		local session = tostring(session_for(ctx, args))
+		local mem = ctx.memory.create(config.MEMORY_ROOT .. "/" .. session)
+		for _, key in ipairs({ "history", "last_report", "last_analysis", "analysis_sessions" }) do
+			mem:delete(key)
+		end
+
+		for _, slug in ipairs(AGENT_SLUGS) do
+			local agent_mem = ctx.memory.create(config.MEMORY_ROOT .. "/agents/" .. slug .. "/" .. session)
+			agent_mem:delete("last_verdict")
+			agent_mem:delete("last_report")
+		end
+
+		return session
 	end
 
 	function store.append_turn(history, role, content)

@@ -1127,10 +1127,18 @@ async function clearMemory() {
   setBusy(els.clearButton, true, "Clearing");
   try {
     await callAction("chat.clear");
+    stopActivityPlayback();
+    state.analysis = null;
+    state.sessions = [];
+    state.pendingFix = null;
+    state.reportModel = "";
     renderHistory([]);
-    setReportPlaceholder("Chat memory cleared.");
-    setStatus("Memory cleared", "online");
-    showToast("Memory cleared", "info");
+    renderSessions([]);
+    renderEmpty();
+    setReportPlaceholder("No report generated yet.");
+    closeDiffDialog();
+    setStatus("All memory cleared", "online");
+    showToast("All memory and saved sessions cleared", "info");
   } catch (error) {
     setStatus("Clear failed", "offline");
     showToast(error.message);
